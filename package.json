@@ -1,0 +1,30 @@
+{
+  "name": "@mtgame/figma-export-icons",
+  "version": "1.0.0",
+  "description": "Export icons from figma",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Dmitry Lysenkov <dmlysenkov@mtgame.ru>",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "chalk": "^4.0.0",
+    "ora": "^4.0.4",
+    "prompts": "^2.3.2"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/R0gnar/figma-export-icons.git"
+  },
+  "bugs": {
+    "url": "https://github.com/R0gnar/figma-export-icons/issues"
+  },
+  "homepage": "https://github.com/R0gnar/figma-export-icons#readme",
+  "bin": {
+    "figma-export-tokens": "./cli.js"
+  }
+}
