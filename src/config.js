@@ -1,7 +1,7 @@
 const fs = require('fs');
 const prompts = require('prompts');
 
-const configFileName = '.figma-config.json';
+const configFileName = '.figma-icons-config.json';
 const defaults = {
     token: '',
     file: '',
