@@ -25,6 +25,6 @@
   },
   "homepage": "https://github.com/R0gnar/figma-export-icons#readme",
   "bin": {
-    "figma-export-tokens": "./cli.js"
+    "figma-export-icons": "./cli.js"
   }
 }
