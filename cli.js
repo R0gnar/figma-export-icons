@@ -13,16 +13,20 @@ const spinner = ora();
 async function run() {
     const config = await getConfig();
     const client = FigmaApi(config.token);
-    spinner.start('Fetching Figma file');
-    const file = await client.getFile(config.file);
+    spinner.start('Fetching Figma file pages');
+    const pages = await client.getFile(config.file, {depth: 1});
     spinner.succeed();
-    const page = file.document.children.find(c => c.name === config.page);
+    const page = pages.document.children.find(c => c.name === config.iconsPage);
     if (!page) {
-        console.log(chalk.red.bold(`Page ${config.page} not found`));
+        console.log(chalk.red.bold(`Page ${config.iconsPage} not found`));
         return;
     }
+    spinner.start('Fetching Figma file icons');
+    const pageData = await client.getFile(config.file, {ids: page.id, depth: 2});
+    spinner.succeed();
+    const elements = pageData.document.children.find(c => c.id === page.id).children;
     const icons = [];
-    page.children.forEach(item => {
+    elements.forEach(item => {
         const nameParts = item.name.split('/');
         const type = nameParts[0].trim();
         if (type === config.iconPrefix) {
