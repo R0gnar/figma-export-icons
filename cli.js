@@ -38,6 +38,8 @@ async function run() {
         process.exit(1);
     }
     checkDuplicates(icons);
+    checkDeleted(icons, config.typingsFilePath);
+    saveIconTypings(icons, config.typingsFilePath);
 
     spinner.start('Fetching icons from figma');
     const nodeIds = icons.map(item => item.id);
@@ -60,6 +62,24 @@ function checkDuplicates(icons) {
     }
 }
 
+function checkDeleted(icons, typingsFilePath) {
+    const dirname = path.dirname(typingsFilePath);
+    const iconsJsonFilePath = path.join(dirname, path.basename(typingsFilePath, '.ts') + '.json');
+    const oldIcons = getOldIcons(iconsJsonFilePath);
+    const newIconNames = icons.map(item => formatName(item.name));
+    const deleted = oldIcons.filter(name => newIconNames.indexOf(name) < 0);
+    if (deleted.length > 0) {
+        console.log(chalk.red.bold(`Deleted icons: ${deleted.join(' ')}`))
+    }
+}
+
+function getOldIcons(filePath) {
+    if (!fs.existsSync(filePath)) {
+        return [];
+    }
+    return JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+}
+
 async function downloadIcons(icons) {
     const requests = icons.map(node => downloadIcon(node));
     return Promise.all(requests);
@@ -77,6 +97,15 @@ async function downloadIcon(node) {
             resolve(svg);
         }, reject);
     });
+}
+
+function saveIconTypings(icons, typingsFilePath) {
+    const dirname = path.dirname(typingsFilePath);
+    const iconsJsonFilePath = path.join(dirname, `.${path.basename(typingsFilePath, '.ts')}.json`);
+    const iconsNames = icons.map(item => formatName(item.name));
+    fs.writeFileSync(iconsJsonFilePath, JSON.stringify(iconsNames));
+    const typings = 'export type iconTypes =\n' + iconsNames.map(item => `  '${item}'`).join(' |\n') + ';'
+    fs.writeFileSync(typingsFilePath, typings);
 }
 
 function saveIcons(icons, filePath) {

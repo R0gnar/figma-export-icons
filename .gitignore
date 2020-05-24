@@ -3,3 +3,5 @@
 icons.html
 node_modules
 .figma-config.json
+.icon-types.json
+icon-types.ts

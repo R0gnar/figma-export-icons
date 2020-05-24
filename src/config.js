@@ -8,7 +8,8 @@ const defaults = {
     file: '',
     iconsPage: 'Page 1',
     iconPrefix: 'Icon',
-    iconsFilePath: 'icons.html'
+    iconsFilePath: 'icons.html',
+    typingsFilePath: 'icon-types.ts',
 };
 
 const configList = [
@@ -46,6 +47,12 @@ const configList = [
         message: 'Icons file path:',
         validate: value => value === '' ? 'Enter icons file path' : true,
         initial: defaults.iconsFilePath,
+    },
+    {
+        type: 'text',
+        name: 'typingsFilePath',
+        message: 'Icons typings file path',
+        initial: defaults.typingsFilePath,
     }
 ];
 
