@@ -16,7 +16,8 @@ async function run() {
     spinner.start('Fetching Figma file pages');
     const pages = await client.getFile(config.file, {depth: 1});
     spinner.succeed();
-    const page = pages.document.children.find(c => c.name === config.iconsPage);
+    const removeEmoji = /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/gi;
+    const page = pages.document.children.find(c => c.name.replace(removeEmoji, '') === config.iconsPage);
     if (!page) {
         console.log(chalk.red.bold(`Page ${config.iconsPage} not found`));
         return;
